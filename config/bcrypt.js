@@ -1,3 +1,3 @@
 module.exports = {
-    saltRound : process.env.SALT || 10
+    saltRound : parseInt(process.env.SALT)|| 10
 };
