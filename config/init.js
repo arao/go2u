@@ -12,7 +12,7 @@ const secretRoutePath = credentials.default.specialRoutes;
 
 async function mongooseInIt(){
     try {
-        let db = await mongoose.connect(credentials.dbAddress(), {useNewUrlParser: true})
+        let db = await mongoose.connect(process.env.DB_URI, {useNewUrlParser: true})
         debug('connected to db');
         return Promise.resolve(db);
     }catch(err){

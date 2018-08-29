@@ -12,7 +12,12 @@ router.get('/checkemail', userController.checkEmail);
 
 router.get('/logout', userController.logout);
 
-router.get('/authenticateuser', userController.authenticate);
+router.get('/authenticateuser', userController.authenticate );
+
+router.post('/forgetpassword', userController.forgetPassword );
+
+router.put('/resetpassword', userController.resetForgetPassword );
+
 
 router.get('/csrfToken', (req, res, next)=>{
     res.json({token: req.csrfToken()});

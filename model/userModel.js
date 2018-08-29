@@ -10,6 +10,7 @@ const userSchema = new Scheme({
 },{timestamp: true});
 
 
+
 async function hashPassword() {
     let user = this;
     user.password = await bcrypt.hash(user.password, saltRound);
@@ -18,5 +19,9 @@ async function hashPassword() {
 
 userSchema.pre('save', hashPassword);
 
-
+userSchema.pre('findOneAndUpdate', async function (next) {
+    let user = this;
+    user._update.password = await bcrypt.hash(user._update.password, saltRound);
+    next();
+});
 module.exports = mongoose.model('user', userSchema);

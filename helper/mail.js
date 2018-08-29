@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const debuug = require('debug')('mixdown:mail');
+const debug = require('debug')('mixdown:mail');
 
 async function credentials(){
     try{
@@ -27,7 +27,7 @@ async function sendMail(options){
 
         let mailOptions = {
             from: options.user || account.user,
-            to: options.to,
+            to: options.email,
             subject: options.subject,
             text: options.text,
             html: options.html
@@ -35,8 +35,10 @@ async function sendMail(options){
 
         let info = await transporter.sendMail(mailOptions);
         debug(info);
+        return Promise.resolve({send: true});
     }catch (err) {
         debug(err);
+        return Promise.reject({send: false, error: "failed to send mail", message: err.message});
     }
 }
 
