@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const csrf = require('csurf');
-const cors = require('cors');
+// const cors = require('cors');
 const hbs = require('hbs');
 
 //Config Modules
